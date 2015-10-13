@@ -181,7 +181,16 @@ namespace Cassandra
             {
                 throw new NullReferenceException(String.Format("Cannot convert null to {0} because it is a value type, try using Nullable<{0}>", type.Name));
             }
-            return (T) value;
+
+	        try
+	        {
+		        var valueTyped = (T) value;
+		        return valueTyped;
+	        }
+			catch (InvalidCastException)
+			{
+				return default(T);
+			}
         }
 
         /// <summary>
